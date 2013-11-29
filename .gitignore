@@ -1,8 +1,10 @@
+### Python ###
 *.py[cod]
 
 # C extensions
 *.so
 
+*.swp
 # Packages
 *.egg
 *.egg-info
@@ -34,3 +36,7 @@ nosetests.xml
 .mr.developer.cfg
 .project
 .pydevproject
+
+# Rope
+.ropeproject
+

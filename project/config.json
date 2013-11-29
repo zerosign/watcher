@@ -1,0 +1,8 @@
+{
+	"beam.smp" : {
+		"timespan" : "1hr"
+	},
+	"java" : {
+		"timespan" : "1hr"
+	}
+}

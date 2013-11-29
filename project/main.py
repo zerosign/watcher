@@ -1,10 +1,9 @@
 #!/usr/bin/env python3
 import sys
 import os
+import json
 
 from watcher.watcher import Watcher
-from watcher.stats import Stats
-from watcher.helper import TimeHelper
 
 if __name__ == "__main__":
 	if len(sys.argv) != 2:
@@ -12,17 +11,17 @@ if __name__ == "__main__":
 		sys.exit(-1)
 
 	path = sys.argv[1]
+	
 	print("Using config path : %s " % path) 
+	
 	if not os.path.exists(path):
 		sys.exit(-1)
 	
-	config = open(path, 'r').readlines()
-	config = Watcher.parse(config)
-
-	#watchers = map[Watcher(conf) for conf in config]
-	#processes = map[lambda watcher: watcher.start(), watchers]
+	config = Watcher.parse(json.loads("".join(open(path, 'r').readlines())))
+	watchers = [Watcher(conf) for conf in config]
+	processes = [watcher.start() for watcher in watchers]
 	
 	# join all process
-	#for process in processes:
-		#process.join()
+	for process in processes:
+		process.join()
 

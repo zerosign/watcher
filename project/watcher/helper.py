@@ -20,8 +20,9 @@ class TimeHelper():
 		time_group = group.groupdict()
 		time_params = {}
 		timespan = 0
-
-		for (key, value) in time_group:
+		print(str(time_group))
+		for key in time_group:
+			value = time_group[key]
 			if value:	
 				time_params[key] = int(value)
 

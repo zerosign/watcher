@@ -6,15 +6,17 @@ import time
 import os
 from datetime import timedelta, datetime
 from .helper import TimeHelper
-from .stats import Stats
+from .stats import Stats, EmptyStats
 
 class Watcher():
 	
+	output_folder = None
+
 	def __init__(self, config=()):
 		self.pid = int(config[0][0])
 		self.name = config[0][1]
 		self.config = config[1]
-		filename =  "%d.output" % (self.pid)
+		filename =  "%s/%s-%d.output" % (Watcher.output_folder, self.name, self.pid)
 		existed = os.path.exists(filename)
 		self.output = open(filename, 'a')
 
@@ -23,12 +25,17 @@ class Watcher():
 
 	@staticmethod
 	def fetch(watcher):
-		p = psutil.Process(watcher.pid)
+		stats = EmptyStats()
+		try: 
+			p = psutil.Process(watcher.pid)
 
-		stats = Stats(watcher.name, watcher.pid, p.get_memory_percent(), p.get_cpu_percent(1), 
-				len(p.get_threads()), p.get_num_fds(),
-				len(p.get_connections()), time.time())
-
+			stats = Stats(watcher.name, watcher.pid, p.get_memory_percent(), p.get_cpu_percent(1), 
+					len(p.get_threads()), p.get_num_fds(),
+					len(p.get_connections()), time.time())
+			
+		except Exception as ex:
+			print(ex)
+		
 		return stats
 
 	@staticmethod
@@ -41,9 +48,13 @@ class Watcher():
 			if not result:
 				break
 			stats = Watcher.fetch(watcher)
-			# print( "%s\n" % str(stats) )
-			watcher.output.write("%s\n" % str(stats))
-			watcher.output.flush()
+			if not isinstance(stats, EmptyStats):
+				# print( "%s\n" % str(stats) )
+				watcher.output.write("%s\n" % str(stats))
+				watcher.output.flush()
+			else:
+				break
+
 		watcher.output.close()
 
 	def start(self):

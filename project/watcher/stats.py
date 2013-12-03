@@ -86,10 +86,18 @@ class Stats():
 
 	@staticmethod
 	def header():
-		return "name, pid, memory, cpu, thread, fd, connection, timestamp\n"
+		return "memory, cpu, thread, fd, connection, timestamp\n"
+
+	@staticmethod
+	def get_header(f):
+		return f.readline().split(',')
 
 	def __str__(self):
-		return ",".join([self._name, str(self._pid), str(self._memory), str(self._cpu), 
-			str(self._thread), str(self._fd), str(self._connection), str(self._timestamp)])
+		return ",".join([str(self._memory), str(self._cpu), str(self._thread), 
+			str(self._fd), str(self._connection), str(self._timestamp)])
 
 
+class EmptyStats(Stats):
+
+	def __init__(self):
+		super()

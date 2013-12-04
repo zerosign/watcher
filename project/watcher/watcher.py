@@ -28,8 +28,8 @@ class Watcher():
 		stats = EmptyStats()
 		try: 
 			p = psutil.Process(watcher.pid)
-
-			stats = Stats(watcher.name, watcher.pid, p.get_memory_percent(), p.get_cpu_percent(1), 
+                        mem_usage_total = sum(p.get_memory_info())
+			stats = Stats(watcher.name, watcher.pid, mem_usage_total, p.get_cpu_percent(1), 
 					len(p.get_threads()), p.get_num_fds(),
 					len(p.get_connections()), time.time())
 			

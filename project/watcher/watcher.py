@@ -38,7 +38,7 @@ class Watcher():
 
         except Exception as ex:
             print(ex)
-            return stats
+        return stats
 
     @staticmethod
     def watch(watcher):

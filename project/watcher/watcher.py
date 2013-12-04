@@ -72,7 +72,7 @@ class Watcher():
             if proc.name in proc_names:
                 config_new.append(((proc.pid, proc.name), 
                                    config[proc.name]))
-                return config_new
+        return config_new
 
 
     def __str__(self):

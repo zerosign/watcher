@@ -57,7 +57,7 @@ class Watcher():
             else:
                 break
 
-            watcher.output.close()
+        watcher.output.close()
 
     def start(self):
         self.process = Process(target=Watcher.watch, args = [self])
